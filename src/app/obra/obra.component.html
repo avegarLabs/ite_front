@@ -1,0 +1,85 @@
+<div class="container">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="container px-3 my-2 card-container" *ngIf="!isLoading">
+    <div>
+      <h4 class="mb-1 text-gray-800">Obras</h4>
+      <hr>
+      <div class="row">
+        <div class="col-3">
+          <label class="aria-label">Tipos de Obra</label>
+          <select [(ngModel)]="valueChangeTipo" class="form-select form-select-sm"
+            (ngModelChange)="filterChangeTipology($event)">
+            <option value="" disabled>Filtrar por Tipo de Obra</option>
+            <option *ngFor="let t of tipoObraList" [ngValue]="t">{{t.descripcion}}</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <label class="aria-label">Tipologías</label>
+          <select [(ngModel)]="valueChange" class="form-select form-select-sm" (ngModelChange)="filterChange($event)">
+            <option value="" disabled>Filtrar por Tipología</option>
+            <option *ngFor="let t of tipologyList" [ngValue]="t">{{t.description}}</option>
+          </select>
+        </div>
+        <div class="col-4">
+          <div class="input-group input-group-sm mb-3" style="margin-top: 24px;">
+            <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search fa-lg"></i></span>
+            <input type="text" [(ngModel)]="filterKey" class="form-control" aria-label="Sizing example input"
+              aria-describedby="inputGroup-sizing-sm">
+          </div>
+        </div>
+        <div class="col-2">
+          <a type="submit" (click)="getObrasLst()" class="btn btn-outline-secondary" style="margin-top: 24px;"><i
+              class="fa fa-refresh"></i> </a>&nbsp;
+          <a type="submit" routerLink="/AgregarObra" class="btn btn-outline-primary" style="margin-top: 24px;"><i
+              class="fa fa-plus"></i> Agregar</a>
+
+        </div>
+        <hr>
+
+      </div>
+      <div class="card shadow mb-4 border-left-primary" *ngFor="let item of listObra | obraFilter: filterKey | paginate: {
+      id: 'list1',
+      itemsPerPage: pageSize,
+      currentPage: pageIndex,
+      totalItems: numItemList }">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">{{item.code}} - {{item.description}}</h6>
+        </div>
+        <div class="card-body" align="justify">
+          {{item.specifications}}
+          <hr>
+          <div class="row">
+            <div class="col-lg-10"></div>
+            <div class="col-lg-2">
+              <a class="text-success" routerLink="/detailObra/{{item.id}}" data-bs-toggle="tooltip"
+                data-bs-placement="top" title="Detalle de la Obra"><i class="fa fa-archive fa-2x"></i></a> &nbsp; <a
+                class="text-danger" (click)="deleteItem(item.id)" data-bs-toggle="tooltip" data-bs-placement="top"
+                title="Eliminar Obra" role="button"><i class="fa fa-trash fa-2x"></i></a>
+              &nbsp; <a data-bs-toggle="tooltip" data-bs-placement="top" title="Modificar Obra" class="h5 text-primary"
+                routerLink="/ModificarObra/{{item.id}}"><i class="fa fa-edit fa-2x"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-center">
+      <div>
+        <pagination-controls class="paginator" id="list1" previousLabel="Página anterior" nextLabel="Página siguiente"
+          [responsive]=true [autoHide]=false (pageChange)="handlePageChange($event)">
+        </pagination-controls>
+      </div>
+      <div>
+        <form [formGroup]="pgForm">
+          <select formControlName="pgSize" class="btn_select" (change)="setPageSize()" title="Elementos por página">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+          </select>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

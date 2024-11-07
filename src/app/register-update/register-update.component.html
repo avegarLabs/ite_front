@@ -1,0 +1,69 @@
+<div *ngIf="formHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error!</strong> El formulario contiene campos incorrectos
+  <button type="button" (click)="formHasErrors = false; validator.resetFormControls(form);"
+    class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<div *ngIf="status === 403" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error!</strong> No tiene permisos para realizar esta operación
+  <button type="button" (click)="status = 401;" class="btn-close" data-bs-dismiss="alert"
+    aria-label="Close"></button>
+</div>
+
+<div class="row">
+  <div class="d-flex justify-content-center"><a class="text-primary"><i class="fa fa-user-circle fa-5x"></i></a></div>
+  <div class="d-flex justify-content-center"><p>Editar usuario</p></div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="updateData()">
+  <div class="mb-3">
+    <label for="name" class="form-label">Nombre</label>
+    <input type="text" [className]="validator.setControlClass(form.controls['name'], formHasErrors)"
+      placeholder="Nombre completo" formControlName="name">
+  </div>
+
+  <div class="mb-3">
+    <label for="username" class="form-label">Usuario</label>
+    <input type="text" [className]="validator.setControlClass(form.controls['username'], formHasErrors)"
+      placeholder="Nombre de usuario" formControlName="username">
+  </div>
+
+  <!--div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <label for="password" class="form-label fw-bold">Contraseña</label>
+        <input type="password" [className]="validator.setControlClass(form.controls['password'], formHasErrors, 'text', 'form-control-sm')" formControlName="password">
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label for="password2" class="form-label fw-bold">Confirmar</label>
+        <input type="password" [className]="validator.setControlClass(form.controls['password2'], formHasErrors, 'text', 'form-control-sm')" formControlName="password2">
+      </div>
+    </div>
+  </div-->
+
+  <div class="mb-3">
+    <label for="role" class="form-label">Rol</label>
+    <select id="role" class="form-select" formControlName="role"  [(ngModel)]="selectedRole">
+      <option *ngFor="let role of roleList; let i = index" [ngValue]="role">{{role.description}}</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="mb-3">
+        <label for="department" class="form-label fw-bold">Departamento</label>
+        <input type="department" [className]="validator.setControlClass(form.controls['department'], formHasErrors, 'text', 'form-control-sm')" formControlName="department">
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label for="position" class="form-label fw-bold">Cargo</label>
+        <input type="position" [className]="validator.setControlClass(form.controls['position'], formHasErrors, 'text', 'form-control-sm')" formControlName="position">
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <button type="submit" class="btn btn-outline-success"><i class="fa fa-plus"></i> Actualizar</button>
+</form>

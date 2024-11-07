@@ -1,0 +1,412 @@
+<div class="container">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="card shadow" *ngIf="!isLoading">
+    <div class="card-header py-2">
+      <h6 class="m-0 font-weight-bold text-primary">Nueva Obra</h6>
+    </div>
+    <div class="card-body">
+
+      <div class="row">
+        <form [formGroup]="imort_form" (submit)="getDataFromFile()">
+          <fieldset class="fieldset">
+          <legend class="legend">Importar datos del CalPreC</legend>
+          <div class="d-flex justify-content-between">
+            <div class="col-10 py-3">
+              <input type="file" class="form-control form-control-file form-control-sm" formControlName="file_path" (change)="selectFile($event)">
+            </div>
+            <div class="py-3">
+              <button type="submit" class="btn btn-outline-info btn-sm"><i class="fa fa-download"></i> Importar</button>
+            </div>
+          </div>
+          </fieldset>
+        </form>
+      </div>
+      <br>
+      <br>
+      <form [formGroup]="add_form" (ngSubmit)="addDataObra()" id="add_form">
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label for="code">Código &nbsp; &nbsp; &nbsp; &nbsp; <span *ngIf="codeIsInvalid" class="error_tip">El código debe tener 6 dígitos</span></label>
+            <input formControlName="code" type="text"
+              [className] = "validator.setControlClass(add_form.controls['code'], formAddHasErrors)" id="code"
+              placeholder="000000" (input)="validateCode()" placement="bottom" required>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="description">Descripción</label>
+            <input formControlName="description" type="text"
+              [className]="validator.setControlClass(add_form.controls['description'], formAddHasErrors)"
+              id="description" placeholder="Descripción de la obra">
+            <!--textarea formControlName="description" rows="1" class="form-control"></textarea-->
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="tipoObra">Tipo de Obra</label>
+            <select formControlName="tipoObra" (change)="setTipologies()" [(ngModel)]="selectedTipoObra"
+              [className]="validator.setControlClass(add_form.controls['tipoObra'], formAddHasErrors, 'select')" id="tipoObra">
+              <option *ngFor="let item of tipoObraList; let i = index" [ngValue]="item">{{item.descripcion}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="tipology">Tipología</label>
+            <select formControlName="tipology" [(ngModel)]="selectedTipology"
+              [className]="validator.setControlClass(add_form.controls['tipology'], formAddHasErrors, 'select')"
+              id="tipology">
+              <!--option value="" disabled>Seleccionar...</option-->
+              <option *ngFor="let t of tipologyList; let i = index" [ngValue]="t">{{t.description}}</option>
+            </select>
+          </div>
+
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <label for="specifications">Especificaciones</label>
+            <textarea formControlName="specifications" rows="6"
+              [className]="validator.setControlClass(add_form.controls['specifications'], formAddHasErrors)"
+              id="specifications"></textarea>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label for="fecha">Año</label>
+            <input formControlName="fecha" type="text"
+              [className]="validator.setControlClass(add_form.controls['fecha'], formAddHasErrors)" id="fecha"
+              placeholder="Año">
+          </div>
+          <!--div class="col-md-5 mb-2">
+            <div class="card border-left-warning shadow py-0">
+              <div class="card-body">
+                <form class="form-inline" [formGroup]="imort_form" (submit)="getDataFromFile()">
+                  <div class="form-group mb-2">
+                    <input type="file" class="form-control-file" formControlName="file_path"
+                      (change)="selectFile($event)">
+                  </div>
+                  <button type="submit" class="btn btn-outline-info"><i class="fa fa-download"></i> Importar Datos del
+                    CalPreC</button>
+                </form>
+              </div>
+            </div>
+          </div-->
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-9 mb-3">
+            <div *ngIf="formUnidadHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Error!</strong> El formulario contiene campos incorrectos
+              <button type="button" (click)="formUnidadHasErrors = false; validator.resetFormControls(addUnidadObra);" class="btn-close"
+                data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <form [formGroup]="addUnidadObra" (submit)="poblateTable()">
+              <div class="row">
+                <div class="col-7">
+                  <div class="mb-3">
+                    <label class="form-label">Unidad Física</label>
+                    <select
+                      [className]="validator.setControlClass(addUnidadObra.controls['unidad'], formUnidadHasErrors, 'select', 'form-select-sm')"
+                      aria-label="Especialidades" formControlName="unidad">
+                      <option *ngFor="let esp of um_list" [ngValue]="esp">{{esp.tipo}} - {{esp.um}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <label class="form-label">Cantidad</label>
+                  <div class="input-group input-group-sm mb-3">
+                    <input type="text"
+                      [className]="validator.setControlClass(addUnidadObra.controls['volumen'], formUnidadHasErrors)"
+                      aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                      formControlName="volumen">&nbsp;<button class="btn btn-primary"><i
+                        class="fa fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="unidadFlag">
+              <strong>Error!</strong> La unidad ya está en al tabla
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                (click)="resetFlagValue()"></button>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Unidad</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of unidadesCantidad">
+                  <td>{{item.cantidad}}</td>
+                  <td>{{item.unidadFin.tipo}}</td>
+                  <td><a class="text-danger" (click)="deleteUnidad(item)" data-bs-toggle="tooltip"
+                      data-bs-placement="top" title="Eliminar unidad física" role="button"><i class="fa fa-trash fa-lg"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-outline-primary" [disabled]="codeIsInvalid"><i class="fa fa-plus"></i> Agregar</button>
+        <br><br>
+        <div *ngIf="formAddHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Error!</strong> El formulario contiene campos incorrectos
+          <button type="button" (click)="formAddHasErrors = false; validator.resetFormControls(add_form);" class="btn-close"
+            data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div *ngIf="isCodeObraAdd" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <strong>Error!</strong> Ya existe una obra con el código especificado
+          <button type="button" (click)="isCodeObraAdd = false;"
+            class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </form>
+    </div>
+  </div><br>
+  <div class="card shadow" *ngIf="status">
+    <div class="card-header py-2">
+      <h6 class="m-0 font-weight-bold text-primary">Valores del Presupuesto</h6>
+    </div>
+    <div class="card-body">
+      <!--Fomulario de los valores de las obras-->
+      <div class="row">
+        <div class="col-md-6" *ngIf="status">
+          <div *ngIf="formValuesHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> El formulario contiene campos incorrectos
+            <button type="button" (click)="formValuesHasErrors = false; validator.resetFormControls(values_form);"
+              class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <form [formGroup]="values_form" (ngSubmit)="addDataValues()">
+            <fieldset class="form-group border p-2">
+              <legend>
+                <h6><strong></strong></h6>
+              </legend>
+              <div class="row">
+                <div class="col-md-6">
+                  <fieldset class="form-group border p-2">
+                    <label for="estado">Tipo de servicio</label>
+                    <select formControlName="estado"
+                      [className]="validator.setControlClass(values_form.controls['estado'], formValuesHasErrors, 'select')"
+                      id="estado">
+                      <option value="" disabled>Seleccionar...</option>
+                      <option *ngFor="let estado of estadosList" [ngValue]="estado">{{estado}}</option>
+                    </select>
+                    <br>
+                    <label for="catalogo">Sistema presupuestario</label>
+                    <input formControlName="catalogo" type="text"
+                      [className]="validator.setControlClass(values_form.controls['catalogo'], formValuesHasErrors)"
+                      id="catalogo">
+                  </fieldset>
+                </div>
+
+                <div class="col-md-6">
+                  <fieldset class="form-group border p-2">
+                    <legend>
+                      <h6><strong>Costos directos</strong></h6>
+                    </legend>
+                    <label for="costoMateriales">Costo de materiales</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="costoMateriales" type="number"
+                        [className]="validator.setControlClass(values_form.controls['costoMateriales'], formValuesHasErrors)"
+                        id="costoMateriales">
+                    </div>
+
+                    <label for="costoManoObra">Costo de mano de obra</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="costoManoObra" type="number"
+                        [className]="validator.setControlClass(values_form.controls['costoManoObra'], formValuesHasErrors)"
+                        id="costoManoObra">
+                    </div>
+
+                    <label for="costoEquipos">Costo de equipos</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="costoEquipos" type="number"
+                        [className]="validator.setControlClass(values_form.controls['costoEquipos'], formValuesHasErrors)"
+                        id="costoEquipos">
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  <fieldset class="form-group border p-2">
+                    <legend>
+                      <h6><strong>Utilidades</strong></h6>
+                    </legend>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="utilidades" type="number"
+                        [className]="validator.setControlClass(values_form.controls['utilidades'], formValuesHasErrors)"
+                        id="utilidades">
+                    </div>
+
+                    <legend>
+                      <h6><strong>Precio del Servicio de Construcción y Montaje</strong></h6>
+                    </legend>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="precioServicio" type="number"
+                        [className]="validator.setControlClass(values_form.controls['precioServicio'], formValuesHasErrors)"
+                        id="utilidades">
+                    </div>
+                  </fieldset>
+                </div>
+
+                <div class="col-md-6">
+                  <fieldset class="form-group border p-2">
+                    <legend>
+                      <h6><strong>Otros gastos directos e indirectos</strong></h6>
+                    </legend>
+                    <label for="directosObra">Total de Costos y Gastos</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="totalCostosGastosProduccion" type="number"
+                        [className]="validator.setControlClass(values_form.controls['totalCostosGastosProduccion'], formValuesHasErrors)"
+                        id="directosObra">
+                    </div>
+
+                    <label for="costoIndirectos">Gastos indirectos</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="costoIndirectos" type="number"
+                        [className]="validator.setControlClass(values_form.controls['costoIndirectos'], formValuesHasErrors)"
+                        id="costoIndirectos">
+                    </div>
+
+                    <label for="generalesObra">Otros Conceptos de Gastos</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="otrosConceptos" type="number"
+                        [className]="validator.setControlClass(values_form.controls['otrosConceptos'], formValuesHasErrors)"
+                        id="generalesObra">
+                    </div>
+
+                    <label for="generalesObra">Gastos Financieros</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="gastosFinancieros" type="number"
+                        [className]="validator.setControlClass(values_form.controls['gastosFinancieros'], formValuesHasErrors)"
+                        id="generalesObra">
+                    </div>
+
+                    <label for="generalesObra">Gastos Tributarios</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="gastosTributarios" type="number"
+                        [className]="validator.setControlClass(values_form.controls['gastosTributarios'], formValuesHasErrors)"
+                        id="generalesObra">
+                    </div>
+
+                    <label for="generalesObra">Total de Gastos de la Obra</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="totalGastosObra" type="number"
+                        [className]="validator.setControlClass(values_form.controls['totalGastosObra'], formValuesHasErrors)"
+                        id="generalesObra">
+                    </div>
+
+                    <label for="generalesObra">Total de Costos y Gastos</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                      </div>
+                      <input formControlName="totalCostosGastos" type="number"
+                        [className]="validator.setControlClass(values_form.controls['totalCostosGastos'], formValuesHasErrors)"
+                        id="generalesObra">
+                    </div>
+
+                  </fieldset>
+                </div>
+              </div>
+              <hr>
+              <button type="submit" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Agregar</button>
+            </fieldset>
+          </form>
+
+        </div>
+
+        <div class="col-md-6">
+          <form [formGroup]="esp_form" (ngSubmit)="addDataEspecialidades()">
+            <fieldset class="form-group border p-2">
+              <legend>
+                <h6><strong>Especialidades</strong></h6>
+              </legend>
+              <div class="row">
+                <div class="col-md-7">
+                  <label for="especialidades">Especialidad</label>
+                  <select formControlName="especialidades"
+                    [className]="validator.setControlClass(esp_form.controls['especialidades'], formEspHasErrors, 'select', 'form-select-sm')">
+                    <option value="" disabled>Seleccionar...</option>
+                    <option *ngFor="let esp of espList; let i = index" [ngValue]="esp">{{esp.description}}</option>
+                  </select>
+                </div>
+                <div class="col-md-5">
+                  <label for="costoTotal">Costo por especialidad</label>
+                  <div class="input-group input-group-sm mb-3">
+                    <input type="number"
+                      [className]="validator.setControlClass(esp_form.controls['costoTotal'], formEspHasErrors)"
+                      aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                      formControlName="costoTotal" required>&nbsp;<button class="btn btn-primary"
+                      (click)="addEspTable()"><i class="fa fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          <br>
+          <div>
+            <div *ngIf="isEspAdd" class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Error!</strong> La especialidad ya está en la tabla
+              <button type="button" (click)="isEspAdd = false;" class="btn-close" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+            </div>
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Especialidad</th>
+                  <th scope="col">Costo</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let field of espArray; let i = index">
+                  <td class="align-middle">{{field.especialidades.description}}</td>
+                  <td class="align-middle">{{field.costoTotal}}</td>
+                  <td>
+                    <a class="text-danger" role="button" (click)="delEspTable(i)" data-bs-toggle="tooltip"
+                      data-bs-placement="top" title="Eliminar especialidad"><i class="fa fa-trash"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

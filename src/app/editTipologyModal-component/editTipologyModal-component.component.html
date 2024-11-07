@@ -1,0 +1,53 @@
+<h5 mat-dialog-title>Modificar Tipología</h5><hr>
+<div mat-dialog-content>
+  <div *ngIf="fieldEditHasErrors || fieldSelectHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong> El formulario contiene campos incorrectos
+    <button type="button" (click)="resetFlagErros(); validator.resetFormControls(editTipology);" class="btn-close" data-bs-dismiss="alert"
+      aria-label="Close"></button>
+</div>
+ <form [formGroup]="editTipology" (ngSubmit)="updateData()">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Descripción</label>
+      <input type="text" [className]="validator.setControlClass(editTipology.controls['description'], fieldEditHasErrors)" placeholder="Vivienda Sandino" formControlName="description">
+    </div>
+
+    <div class="mb-3">
+      <label for="tipoObraTipologiasList">Tipos de obra</label>
+      <div class="input-group input-group-sm mb-3">
+          <select formControlName="tipoObraTipologiasList"
+            [className]="validator.setControlClass(editTipology.controls['tipoObraTipologiasList'], fieldSelectHasErrors, 'select')"
+            id="tipology">
+            <!--option value="" disabled>Seleccionar...</option-->
+            <option *ngFor="let t of tipoObraList; let i = index" [ngValue]="t">{{t.descripcion}}</option>
+          </select>
+          &nbsp;<a role="button" (click)="addTipoObraToTipology()" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+      </div>
+    </div>
+
+    <div *ngIf="isTipoObraInTable" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong> El tipo de obra ya se encuentra en la tabla
+      <button type="button" (click)="isTipoObraInTable = false;" class="btn-close"
+        data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="mb-3" *ngIf="tipoObraSelect.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Tipos de obra</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of tipoObraSelect; let i index">
+            <td>{{item.tipoObra.descripcion}}</td>
+            <td><a class="text-danger" (click)="deleteTipoObra(item)" data-bs-toggle="tooltip" role="button"
+                data-bs-placement="top" title="Eliminar"><i class="fa fa-trash fa-lg"></i></a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button type="submit" class="btn btn-outline-success"><i class="fa fa-check"></i> Modificar</button> &nbsp;  <button type="button" (click)="closeDialog()" class="btn btn-outline-dark">Cerrar</button>
+  </form>
+</div>
+

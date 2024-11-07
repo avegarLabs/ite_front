@@ -1,0 +1,20 @@
+<h5 mat-dialog-title>Modificar Unidad Fin</h5><hr>
+<div mat-dialog-content>
+  <div *ngIf="formHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong> El formulario contiene campos incorrectos
+    <button type="button" (click)="formHasErrors = false; validator.resetFormControls(form_uf);" class="btn-close" data-bs-dismiss="alert"
+      aria-label="Close"></button>
+</div>
+ <form [formGroup]="form_uf" (ngSubmit)="updateData()">
+    <div class="mb-3">
+      <label for="tipo" class="form-label">Nombre</label>
+      <input type="text" [className]="validator.setControlClass(form_uf.controls['tipo'], formHasErrors)" formControlName="tipo">
+    </div>
+    <div class="mb-3">
+      <label for="um" class="form-label">Unidad de medida</label>
+      <input type="text" [className]="validator.setControlClass(form_uf.controls['um'], formHasErrors)" formControlName="um">
+    </div>
+    <button type="submit" class="btn btn-outline-success"><i class="fa fa-check"></i> Modificar</button> &nbsp;
+    <button type="button" (click)="closeDialog()" class="btn btn-outline-dark">Cerrar</button>
+  </form>
+</div>

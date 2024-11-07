@@ -1,0 +1,69 @@
+<mat-toolbar>
+    <h1>Índices Técnicos Económicos (ITE)</h1>
+</mat-toolbar>
+
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened *ngIf="showSideMenu">
+      <div class="d-flex justify-content-left" *ngIf="userIsLoged">
+          <div>
+            <a role="button" (click)="gotoConfiguration()" title="Configuración">
+              <i class="fa fa-user-circle fa-2x"></i>
+            </a>
+            &nbsp;
+          </div>
+          <div>
+            <h6>{{user}}</h6>
+          </div>
+      </div>
+      <mat-divider></mat-divider>
+      <button mat-button routerLink="/home" class="menu-button">
+        <mat-icon>house</mat-icon>
+        <span> Inicio</span>
+      </button>
+      <button mat-button routerLink="/indice" class="menu-button">
+        <mat-icon>book</mat-icon>
+        <span> Indices</span>
+      </button>
+     <button mat-button routerLink="/Obras" class="menu-button">
+        <mat-icon>domain</mat-icon>
+        <span> Obras</span>
+      </button>
+      <button mat-button routerLink="/tipoObra" class="menu-button">
+        <mat-icon>location_city</mat-icon>
+        <span> Tipos de obra</span>
+      </button>
+      <button mat-button routerLink="/tipology" class="menu-button">
+        <mat-icon>architecture</mat-icon>
+        <span> Tipología</span>
+      </button>
+      <button mat-button routerLink="/especialidades" class="menu-button">
+        <mat-icon>share</mat-icon>
+        <span> Especialidades</span>
+      </button>
+      <button mat-button routerLink="/UnidadFin" class="menu-button">
+        <mat-icon>store</mat-icon>
+        <span> Unidad fin</span>
+      </button>
+
+      <div *ngIf="userIsLoged">
+        <mat-divider></mat-divider>
+
+        <button mat-button routerLink="/registro" class="menu-button" *ngIf="isUserAdmin">
+          <mat-icon>list</mat-icon>
+          <span> Usuarios</span>
+        </button>
+
+        <button mat-button routerLink="/" class="menu-button" (click)="logout()">
+          <mat-icon>power_settings_new</mat-icon>
+          <span> Cerrar sesión</span>
+        </button>
+      </div>
+
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+

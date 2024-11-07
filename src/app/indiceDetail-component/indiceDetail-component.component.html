@@ -1,0 +1,229 @@
+<div class="container">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="container px-3 my-2 card-container" *ngIf="!isLoading">
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col-md-9">
+          <h6 class="m-0 font-weight-bold text-primary">{{obra.code}} - {{obra.description}}</h6>
+        </div>
+        <div class="col-md-3">
+          <a class="text-success" role="button" (click)="exportFile(datosBase, listIndexTable)" data-bs-toggle="tooltip"
+            data-bs-placement="top" title="Exportar a Excel"><i class="fa fa-file-excel-o fa-lg"></i></a> &nbsp; <a
+            class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Exportar a PDF" role="button"
+            (click)="exportPdf()"><i class="fa fa-file-pdf-o fa-lg"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card border-left-success shadow py-0">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class=" font-weight-bold text-dark mb-1">
+                        <strong>Tipo de Obra:</strong> {{obra.tipoObra.descripcion}}
+                      </div>
+                      <div class="font-weight-bold text-dark mb-1">
+                        <strong>Tipología:</strong> {{obra.tipology.description}}
+                      </div>
+                      <div class=" font-weight-bold text-dark mb-1">
+                        <strong>Sistema Presupuestarío: </strong> {{datosBase.catalogo}}
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class=" font-weight-bold text-dark mb-1">
+                    <strong>Año:</strong> {{obra.fecha}}
+                  </div>
+                  <div class="font-weight-bold text-dark mb-1">
+                    <strong>Valor Total:</strong> {{ costo | number : '1.1-2'}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card border-left-success shadow py-0">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class="text-md font-weight-bold text-dark mb-1" align="justify">
+                    {{obra.specifications}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><br>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card border-left-success shadow py-0">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <h6><i class="fa fa-check text-success"></i> Indices por Unidad de Fin</h6>
+                  <hr>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Unidad de Fin</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Costo/Unidad</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of listIndexTable">
+                        <td>{{item.unidad}}</td>
+                        <td>{{item.cantidad | number : '1.1-2'}}</td>
+                        <td>{{item.indice}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card border-left-success shadow py-0">
+            <div class="card-body">
+              <h6><i class="fa fa-check text-success"></i> Costos Directos</h6><hr>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Concepto</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Costo Material</td>
+                    <td>{{datosBase.costoMateriales | number : '1.1-2'}}</td>
+                    <td>{{datosBase.costoMateriales/costo * 100 | number : '1.1-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Costo M. de Obra</td>
+                    <td>{{datosBase.costoManoObra | number : '1.1-2'}}</td>
+                    <td>{{datosBase.costoManoObra/costo * 100 | number : '1.1-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Costo de Equipos</td>
+                    <td>{{datosBase.costoEquipos | number : '1.1-2'}}</td>
+                    <td>{{datosBase.costoEquipos/costo * 100 | number : '1.1-2'}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Total</th>
+                    <td>{{datosBase.costoMateriales + datosBase.costoManoObra +
+                      datosBase.costoEquipos | number : '1.1-2'}}</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div>
+                <h6><i class="fa fa-check text-success"></i> Otros Gastos Directos e Indirectos</h6><hr>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Concepto</th>
+                      <th scope="col">Valor</th>
+                      <th>%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="col">Total de Costos y Gastos de Producción de la Obra</th>
+                      <td>{{datosBase.totalCostosGastosProduccion | number : '1.1-2'}}</td>
+                      <td>{{datosBase.totalCostosGastosProduccion /costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+                   
+                    <tr>
+                      <th scope="col">Gastos Indirectos</th>
+                      <td>{{datosBase.costoIndirectos | number : '1.1-2'}}</td>
+                      <td>{{datosBase.costoIndirectos /costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="col">Otros Conceptos de Gastos</th>
+                      <td>{{datosBase.otrosConceptos | number : '1.1-2'}}</td>
+                      <td>{{datosBase.otrosConceptos /costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="col">Gastos Financieros</th>
+                      <td>{{datosBase.gastosFinancieros | number : '1.1-2'}}</td>
+                      <td>{{datosBase.gastosFinancieros /costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="col">Gastos Tributarios</th>
+                      <td>{{datosBase.gastosTributarios | number : '1.1-2'}}</td>
+                      <td>{{datosBase.gastosTributarios /costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="col">Total de Gastos de la Obra</th>
+                      <td>{{datosBase.totalGastosObra | number : '1.1-2'}}</td>
+                      <td>{{datosBase.totalGastosObra /costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="col">Total de Costos y Gastos</th>
+                      <td>{{datosBase.totalCostosGastos | number : '1.1-2'}}</td>
+                      <td>{{datosBase.totalCostosGastos /costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+
+                    <tr>
+                      <th scope="col">Utilidades</th>
+                      <td>{{datosBase.utilidades | number : '1.1-2'}}</td>
+                      <td>{{datosBase.utilidades /costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="col">Precio del Servicio de Construcción</th>
+                      <td>{{costo | number : '1.1-2'}}</td>
+                      <td>{{costo /costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card border-left-success shadow py-0">
+            <div class="card-body">
+              <div class="card-body">
+                <h6><i class="fa fa-check text-success"></i> Costos por Especialidades</h6><hr>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Especialidad</th>
+                      <th scope="col">Valor</th>
+                      <th scope="col">%</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let valEs of datosBase.valoresEspecialidades">
+                      <td>{{valEs.especialidades.description}}</td>
+                      <td>{{valEs.costoTotal | number : '1.1-2'}}</td>
+                      <td>{{valEs.costoTotal/costo * 100 | number : '1.1-2'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

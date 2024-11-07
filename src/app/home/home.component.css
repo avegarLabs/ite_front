@@ -1,0 +1,18 @@
+.position-absolute {
+    position: relative;
+  
+    height: 100px;
+    width: 200px;
+  
+    background: #ffff99;
+    color: #333;
+  }
+  
+  .position-absolute__content {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+  
+    transform: translate(-50%, -50%);
+  }
+  

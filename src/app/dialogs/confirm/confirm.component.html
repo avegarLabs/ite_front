@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-10">
+    <h2 mat-dialog-title>{{data?.title}}</h2>
+  </div>
+  <div class="col-1">
+    <button mat-icon-button [mat-dialog-close]="false" color="warn">
+        <!--mat-icon>close</mat-icon-->
+        <i class="fa fa-window-close fa-lg"></i>
+    </button>
+  </div>
+</div>
+
+<div mat-dialog-content>
+  {{data?.message}}
+</div>
+
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button [mat-dialog-close]="false" class="btn btn-outline-primary">{{data?.cancelText}} <i class="fa fa-times fa-lg"></i></button>
+  <button mat-raised-button  class="btn btn-outline-danger" [mat-dialog-close]="true">{{data?.confirmText}} <i class="fa fa-trash fa-lg"></i></button>
+</div>

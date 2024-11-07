@@ -1,0 +1,100 @@
+<div class="container">
+
+  <div aria-live="polite" aria-atomic="true" *ngIf="showNotification">
+    <div class="toast show" style="position: absolute; bottom: 0; right: 0;">
+      <div class="toast-body {{color}}">
+        <div class="d-flex justify-content-between">
+          <small class="text-light">{{message}}</small>
+          <button type="button" class="btn-close btn-sm" data-dismiss="toast" aria-label="Close"  (click)="showNotification = false;">
+            <span aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container px-3 my-2 card-container">
+    <h4 class="mb-1 text-gray-800">Configuración</h4>
+    <hr>
+    <div class="row">
+      <div class="col-8">
+        <form [formGroup]="formUser" (ngSubmit)="updateUserData()">
+          <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label fw-bold">Nombre</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" id="name" formControlName="name">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="username" class="col-sm-2 col-form-label fw-bold">Usuario</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" id="username" formControlName="username">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="department" class="col-sm-2 col-form-label fw-bold">Departamento</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" id="department" formControlName="department">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="position" class="col-sm-2 col-form-label fw-bold">Cargo</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control form-control-sm" id="position" formControlName="position">
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-10"></div>
+            <div class="col-sm-2">
+              <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fa fa-save"></i> Guardar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="col-4">
+        <div *ngIf="formChgPwdHasErrors">
+          <strong class="text-danger">Error!</strong> <small class="text-danger"> El formulario contiene campos vacíos</small>
+          <button type="button" (click)="formChgPwdHasErrors = false; validator.resetFormControls(formChgPwd);"
+           class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div *ngIf="isPasswordNotEqual">
+          <strong class="text-danger">Error!</strong> <small class="text-danger"> Las contraseñas no coinciden</small>
+          <button type="button" (click)="isPasswordNotEqual = false; validator.resetFormControls(formChgPwd);"
+           class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <fieldset class="border p-2">
+          <legend>Cambiar contraseña</legend>
+          <form [formGroup]="formChgPwd" (ngSubmit)="changeUserPassword()">
+            <div class="mb-3">
+              <input type="password" [className]="validator.setControlClass(formChgPwd.controls['passwordOld'], formChgPwdHasErrors, 'text', 'form-control-sm')"
+                placeholder="Contraseña anterior" formControlName="passwordOld">
+            </div>
+
+            <div class="mb-3">
+              <input type="password" [className]="validator.setControlClass(formChgPwd.controls['passwordNew'], formChgPwdHasErrors, 'text', 'form-control-sm')"
+              placeholder="Nueva contraseña" formControlName="passwordNew">
+            </div>
+
+            <div class="mb-3">
+              <input type="password" [className]="validator.setControlClass(formChgPwd.controls['passwordCon'], formChgPwdHasErrors, 'text', 'form-control-sm')"
+              placeholder="Confirmar contraseña" formControlName="passwordCon">
+            </div>
+            <hr>
+            <div  class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fa fa-lock"></i> Cambiar</button>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+
+    </div>
+
+  </div>
+</div>

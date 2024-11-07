@@ -1,0 +1,7 @@
+{
+  "/api/*": {
+    "target": "https://ite-back-latest.onrender.com",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}

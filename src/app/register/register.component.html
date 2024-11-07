@@ -1,0 +1,163 @@
+<div class="container">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="container px-3 my-2 card-container" *ngIf="!isLoading">
+    <div class="container px-3 my-2 card-container">
+      <h4 class="mb-1 text-gray-800">Usuarios</h4>
+      <hr>
+      <div class="row">
+        <div class="col-4">
+          <div class="card shadow">
+            <div class="card-header py-2">
+              <h6 class="m-0 font-weight-bold text-primary">Nuevo usuario </h6>
+            </div>
+            <div class="card-body">
+              <div *ngIf="formHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> El formulario contiene campos incorrectos
+                <button type="button" (click)="formHasErrors = false; validator.resetFormControls(form);"
+                  class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <div *ngIf="isPasswordNotEqual" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> Las contraseñas no son iguales
+                <button type="button" (click)="isPasswordNotEqual = false;" class="btn-close" data-bs-dismiss="alert"
+                  aria-label="Close"></button>
+              </div>
+              <div *ngIf="status === 403" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> No tiene permisos para realizar esta operación
+                <button type="button" (click)="status = 401;" class="btn-close" data-bs-dismiss="alert"
+                  aria-label="Close"></button>
+              </div>
+              <form [formGroup]="form" (ngSubmit)="addData()">
+                <div class="mb-3">
+                  <label for="name" class="form-label fw-bold">Nombre</label>
+                  <input type="text"
+                    [className]="validator.setControlClass(form.controls['name'], formHasErrors, 'text', 'form-control-sm')"
+                    placeholder="Nombre completo" formControlName="name">
+                </div>
+
+                <div class="mb-3">
+                  <label for="username" class="form-label fw-bold">Usuario</label>
+                  <input type="text"
+                    [className]="validator.setControlClass(form.controls['username'], formHasErrors, 'text', 'form-control-sm')"
+                    placeholder="Nombre de usuario" formControlName="username">
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <div class="mb-3">
+                      <label for="password" class="form-label fw-bold">Contraseña</label>
+                      <input type="password"
+                        [className]="validator.setControlClass(form.controls['password'], formHasErrors, 'text', 'form-control-sm')"
+                        formControlName="password">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="mb-3">
+                      <label for="password2" class="form-label fw-bold">Confirmar</label>
+                      <input type="password"
+                        [className]="validator.setControlClass(form.controls['password2'], formHasErrors, 'text', 'form-control-sm')"
+                        formControlName="password2">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="role" class="form-label fw-bold">Rol</label>
+                  <select id="role" class="form-select form-select-sm" formControlName="role">
+                    <option *ngFor="let role of roleList; let i = index" [ngValue]="role">{{role.description}}</option>
+                  </select>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <div class="mb-3">
+                      <label for="department" class="form-label fw-bold">Departamento</label>
+                      <input type="department"
+                        [className]="validator.setControlClass(form.controls['department'], formHasErrors, 'text', 'form-control-sm')"
+                        formControlName="department">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="mb-3">
+                      <label for="position" class="form-label fw-bold">Cargo</label>
+                      <input type="position"
+                        [className]="validator.setControlClass(form.controls['position'], formHasErrors, 'text', 'form-control-sm')"
+                        formControlName="position">
+                    </div>
+                  </div>
+                </div>
+
+                <hr>
+                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Agregar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-8">
+          <div *ngFor="let item of userList | paginate: {
+        id: 'list1',
+        itemsPerPage: pageSize,
+        currentPage: pageIndex,
+        totalItems: numItemList }">
+            <div class="card py-0">
+              <div class="card-header py-2">
+                <h6 class="m-0 font-weight-bold text-primary">{{item.name}}</h6>
+              </div>
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col"><i class="fa fa-caret-right text-primary"></i> <strong> Usuario:</strong>
+                    {{item.username}}</div>
+                  <div class="col"><i class="fa fa-caret-right text-primary"></i> <strong> Rol:</strong>
+                    {{getUserRoles(item)}}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col"><i class="fa fa-caret-right text-primary"></i> <strong> Departamento:</strong>
+                    {{item.department}}</div>
+                  <div class="col"><i class="fa fa-caret-right text-primary"></i> <strong> Cargo:</strong>
+                    {{item.position}}</div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-9"></div>
+                  <div class="col-md-3">
+                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="Modificar usuario" class="text-primary"
+                      (click)="openDialog(item)" role="button"><i class="fa fa-edit fa-lg"></i></a> &nbsp;
+                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="Cambiar contraseña" class="text-dark"
+                      (click)="openChangePassword(item)" role="button"><i class="fa fa-lock fa-lg"></i></a> &nbsp;
+                    <a class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar usuario"
+                      role="button" (click)="deleteUser(item)"><i class="fa fa-trash fa-lg "></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+          </div>
+
+          <div class="d-flex justify-content-center">
+            <div>
+              <pagination-controls class="paginator" id="list1" previousLabel="Página anterior"
+                nextLabel="Página siguiente" [responsive]=true [autoHide]=false (pageChange)="handlePageChange($event)">
+              </pagination-controls>
+            </div>
+            <div>
+              <form [formGroup]="pgForm">
+                <select formControlName="pgSize" class="btn_select" (change)="setPageSize()"
+                  title="Elementos por página">
+                  <option value="3" selected>3</option>
+                  <option value="6">6</option>
+                  <option value="9">9</option>
+                  <option value="12">12</option>
+                  <option value="15">15</option>
+                </select>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+      

@@ -1,0 +1,27 @@
+<div class="card shadow">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="card-header py-2" *ngIf="!isLoading">
+    <h6 class="m-0 font-weight-bold text-primary">Nueva Unidad de Fin </h6>
+  </div>
+  <div class="card-body">
+    <div *ngIf="formHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong> El formulario contiene campos incorrectos
+      <button type="button" (click)="formHasErrors = false; validator.resetFormControls(form_uf)" class="btn-close"
+        data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <form [formGroup]="form_uf" (ngSubmit)="addDataUF()">
+      <div class="mb-3">
+        <label for="tipo" class="form-label">Nombre</label>
+        <input type="text" [className]="validator.setControlClass(form_uf.controls['tipo'], formHasErrors)"
+          formControlName="tipo" placeholder="Camas">
+      </div>
+      <div class="mb-3">
+        <label for="um" class="form-label">Unidad de medida</label>
+        <input type="text" [className]="validator.setControlClass(form_uf.controls['um'], formHasErrors)"
+          formControlName="um" placeholder="U">
+      </div>
+      <hr>
+      <button type="submit" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Agregar</button>
+    </form>
+  </div>
+</div>

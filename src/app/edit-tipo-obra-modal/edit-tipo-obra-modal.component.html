@@ -1,0 +1,15 @@
+<h5 mat-dialog-title>Modificar Tipo de Obra</h5><hr>
+<div mat-dialog-content>
+  <div *ngIf="formHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong> El formulario contiene campos incorrectos
+    <button type="button" (click)="formHasErrors = false; validator.resetFormControls(editTipoObra);" class="btn-close" data-bs-dismiss="alert"
+      aria-label="Close"></button>
+</div>
+ <form [formGroup]="editTipoObra" (ngSubmit)="updateData()">
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Descripción</label>
+      <input type="text" [className]="validator.setControlClass(editTipoObra.controls['descripcion'], formHasErrors)" formControlName="descripcion">
+    </div>
+    <button type="submit" class="btn btn-outline-success"><i class="fa fa-check"></i> Modificar</button> &nbsp;  <button type="button" (click)="closeDialog()" class="btn btn-outline-dark">Cerrar</button>
+  </form>
+</div>

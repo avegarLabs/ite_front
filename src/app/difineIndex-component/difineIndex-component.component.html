@@ -1,0 +1,43 @@
+<div *ngIf="emptyUnidades" class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong>Atención!</strong> La obra no tiene unidades de fin definidas
+  <button type="button" (click)="emptyUnidades = false;" class="btn-close" data-bs-dismiss="alert"
+    aria-label="Close"></button>
+</div>
+<h5 mat-dialog-title>Indice en base al: {{tipoServicio}} </h5>
+<hr>
+<div mat-dialog-content>
+  <h6>Usted creará un nuevo indice técnico económico con estos datos. Presione "Crear Indice" si desea continuar con la operación </h6><hr>
+  <!--div class="row">
+    <div class="col-6">
+      <div class="p-3 bg-light border rounded-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [checked]="cdState"  [value]="" id="flexCheckDefault" (change)="eventCheckCD($event)">
+          <label class="form-check-label" for="flexCheckDefault">
+            Costos Directos
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="p-3 bg-light border rounded-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [value]="" [checked]="ctState"  id="flexCheckDefault" (change)="eventCheckCT($event)">
+          <label class="form-check-label" for="flexCheckDefault">
+            Precio del Servicio de Construcción
+          </label>
+        </div>
+      </div>
+    </div>
+  </div-->
+   <!--label class="form-label">Defina la Unidad de Fin para el Indice</label-->
+  <form [formGroup]="index_form" (ngSubmit)="writeIndice()">
+    <!--select [(ngModel)]="selectValue" class="form-select form-select-sm" aria-label="Tipo de Servicio"
+      formControlName="unit">
+      <option value="" disabled>Seleccionar...</option>
+      <option *ngFor="let val of unidadesList; let i = index" [ngValue]="val">{{val.cantidad}} - {{val.unidadFin.tipo}}</option>
+    </select-->
+
+    <button class="btn btn-outline-success"><i class="fa fa-plus"></i> Crear Indice</button> &nbsp; <a (click)="closeDialog()"
+      class="btn btn-outline-dark"><i class="fa fa-close"></i> Cerrar</a>
+  </form>
+</div>

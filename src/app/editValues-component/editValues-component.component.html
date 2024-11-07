@@ -1,0 +1,218 @@
+<div class="container">
+  <div class="card shadow">
+    <div class="card-header py-2">
+      <h6 class="m-0 font-weight-bold text-primary">Modificar {{valor.estado}} </h6>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-6">
+          <div *ngIf="formEditHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> El formulario contiene campos incorrectos
+            <button type="button" (click)="formEditHasErrors = false; validator.resetFormControls(editValores);"
+              class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <form [formGroup]="editValores" (submit)="updateValores()">
+            <div class="row">
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label">Tipo de Servicio</label>
+                  <select [(ngModel)]="selectValue"
+                    [className]="validator.setControlClass(editValores.controls['estado'], formEditHasErrors, 'select', 'form-select-sm')"
+                    aria-label="Tipo de Servicio" formControlName="estado">
+                    <option *ngFor="let val of estadosList" [ngValue]="val">{{val}}</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Sistema Presupuestario</label>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['catalogo'], formEditHasErrors, 'text', 'form-select-sm')"
+                    formControlName="catalogo">
+                </div>
+                <h6>Costos Directos</h6>
+                <hr>
+                <label class="form-label">Costo Material</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['costoMateriales'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="costoMateriales">
+                </div>
+                <label class="form-label">Costo Equipos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['costoEquipos'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="costoEquipos">
+                </div>
+                <label class="form-label">Costo de Mano de Obras</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['costoManoObra'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="costoManoObra">
+                </div>
+              </div>
+              <div class="col-6">
+                <h6>Otros Gastos Directos e Indirectos</h6>
+                <hr>
+                <label class="form-label">Gastos Directos de Obra</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['directosObra'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="directosObra">
+                </div>
+                <label class="form-label">Total de Costos y Gastos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['totalCostosGastosProduccion'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="totalCostosGastosProduccion">
+                </div>
+                
+                <label class="form-label">Gastos Indirectos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['costoIndirectos'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="costoIndirectos">
+                </div>
+
+                <label class="form-label">Otros Conceptos de Gastos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['otrosConceptos'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="otrosConceptos">
+                </div>
+
+                <label class="form-label">Gastos Financieros</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['gastosFinancieros'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="gastosFinancieros">
+                </div>
+
+                <label class="form-label">Gastos Tributarios</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['totalGastosObra'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="totalGastosObra">
+                </div>
+
+                <label class="form-label">Total de Gastos de la Obra</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['totalGastosObra'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="totalGastosObra">
+                </div>
+
+                <label class="form-label">Total de Costos y Gastos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['totalCostosGastos'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="totalCostosGastos">
+                </div>
+
+                <label class="form-label">Utilidades</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['utilidades'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="utilidades">
+                </div>
+         
+                <label class="form-label">Precio del Servicio de Construcción y Montaje</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text"
+                    [className]="validator.setControlClass(editValores.controls['precioServicio'], formEditHasErrors)"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                    formControlName="precioServicio">
+                </div>
+                <hr>
+                <button type="submit" class="btn btn-outline-success"><i class="fa fa-check"></i> Editar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-6">
+          <div class="card border-left-warning shadow py-0">
+            <div class="card-body">
+              <div *ngIf="formEspHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> El formulario contiene campos incorrectos
+                <button type="button"
+                  (click)="formEspHasErrors = false; validator.resetFormControls(addValorEspecialidad);"
+                  class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <form [formGroup]="addValorEspecialidad" (submit)="addEspecialidadValores()">
+                <div class="row">
+                  <div class="col-7">
+                    <div class="mb-3">
+                      <label class="form-label">Especialidades</label>
+                      <select
+                        [className]="validator.setControlClass(addValorEspecialidad.controls['especialidades'], formEspHasErrors, 'select', 'form-select-sm')"
+                        aria-label="Especialidades" formControlName="especialidades">
+                        <option *ngFor="let esp of espList" [ngValue]="esp">{{esp.description}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    <label class="form-label">Costo</label>
+                    <div class="input-group input-group-sm mb-3">
+                      <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                      <input type="text"
+                        [className]="validator.setControlClass(addValorEspecialidad.controls['costoTotal'], formEspHasErrors)"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"
+                        formControlName="costoTotal">&nbsp;<button class="btn btn-primary"><i
+                          class="fa fa-plus"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="flag">
+                <strong>Error!</strong> La especialidad ya esta en al tabla
+                <button type="button" (click)="closeAlert()" class="btn-close" data-bs-dismiss="alert"
+                  aria-label="Close"></button>
+              </div>
+              <h6>Valores por Especialidades:</h6>
+              <hr>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Especialidad</th>
+                    <th scope="col">Valor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of espValorList">
+                    <td>{{item.especialidades.description}}</td>
+                    <td>{{item.costoTotal}}</td>
+                    <td><a class="text-danger" (click)="deleteItem(item)" data-bs-toggle="tooltip"
+                        data-bs-placement="top" title="Eliminar Valor"><i class="fa fa-trash fa-lg"></i></a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

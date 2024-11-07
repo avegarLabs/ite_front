@@ -1,0 +1,41 @@
+<div class="container">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="container px-3 my-2 card-container" *ngIf="!isLoading">
+  <div class="container px-3 my-2 card-container">
+    <h4 class="mb-1 text-gray-800">Unidad de Fin </h4>
+    <hr>
+    <div class="row">
+      <div class="col-4">
+        <app-add-unidad-fin (updateList)="unidadFinList = $event"></app-add-unidad-fin>
+      </div>
+      <div class="col-8">
+        <div class="card border-left-primary shadow py-0">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Unidad de medida</th>
+                  <th scope="col">Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of unidadFinList">
+                  <td>{{item.tipo}}</td>
+                  <td>{{item.um}}</td>
+                  <td>
+                    <a role="button" class="text-danger" (click)="deleteUnidadFin(item.id)" data-bs-toggle="tooltip"
+                      data-bs-placement="top" title="Eliminar unidad fin"><i class="fa fa-trash fa-lg"></i></a> &nbsp;
+                    <a role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Modificar unidad fin"
+                      class="text-primary" (click)="modalDialogUpdate(item)"><i class="fa fa-edit fa-lg"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

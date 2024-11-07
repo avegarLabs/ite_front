@@ -1,0 +1,97 @@
+<div class="container">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="container px-3 my-2 card-container" *ngIf="!isLoading">
+  <div class="container px-3 my-2 card-container">
+    <h4 class="mb-1 text-gray-800">Índices</h4>
+    <hr>
+    <div class="row">
+      <div class="col-3">
+        <label class="aria-label">Tipos de Obra</label>
+        <select [(ngModel)]="valueChangeTipo" class="form-select form-select-sm"
+          (ngModelChange)="filterChangeTipology($event)">
+          <option value="" disabled>Filtrar por Tipo de Obra</option>
+          <option *ngFor="let t of tipoObraList" [ngValue]="t">{{t.descripcion}}</option>
+        </select>
+      </div>
+      <div class="col-3">
+        <label class="aria-label">Tipologías</label>
+        <select [(ngModel)]="valueChange" class="form-select form-select-sm" (ngModelChange)="filterChange($event)">
+          <option value="" disabled>Filtrar por Tipología</option>
+          <option *ngFor="let t of tipologyList" [ngValue]="t">{{t.description}}</option>
+        </select>
+      </div>
+      <div class="col-5">
+        <div class="input-group input-group-sm mb-3" style="margin-top: 24px;">
+          <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fa fa-search fa-lg"></i></span>
+          <input type="text" [(ngModel)]="filterKey" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-sm">
+        </div>
+      </div>
+      <div class="col-1">
+        <a type="submit" (click)="refreshDatos()" class="btn btn-outline-secondary btn-sm" style="margin-top: 24px;"><i
+            class="fa fa-refresh"></i></a>
+      </div>
+    </div><hr>
+
+    <div class="row">
+      <div class="col-xl-4 col-md-6 mb-4 card-container" *ngFor="let index of indiceList | indiceFilter: filterKey | paginate: {
+      id: 'list1',
+      itemsPerPage: pageSize,
+      currentPage: pageIndex,
+      totalItems: numItemList }">
+        <div class="card  border-left-success shadow py-0">
+          <div class="card-header py-2">
+            <h6 class="m-0 font-weight-bold text-primary">{{index.obra.code}} - {{index.obra.description}}</h6>
+          </div>
+          <div class="card-body">
+            <p *ngIf="index.estado == 'directo'"><i class="fa fa-thumb-tack text-primary"></i> Base de Cálculo: {{index.datosBase.estado}}(Costos Directos)</p>
+            <p *ngIf="index.estado == 'total'"><i class="fa fa-thumb-tack text-primary"></i> Base de Cálculo: {{index.datosBase.estado}}(Precios del Servicio)</p>
+            <hr>
+            <ul class="list-unstyled mb-4">
+              <li><i class="fa fa-check text-primary"></i> Catálogo: {{index.datosBase.catalogo}}</li>
+              <li><i class="fa fa-check text-primary"></i> Tipo de Obra: {{index.obra.tipoObra.descripcion}}</li>
+              <li><i class="fa fa-check text-primary"></i> Tipología: {{index.obra.tipology.description}}</li>
+              <li *ngIf="index.estado == 'total' "><i class="fa fa-check text-primary"></i> Costo Total:
+                {{index.datosBase.costoMateriales + index.datosBase.costoManoObra + index.datosBase.costoEquipos +
+                index.datosBase.costoIndirectos + index.datosBase.directosObra + index.datosBase.generalesObra +
+                index.datosBase.generalesObra + index.datosBase.utilidades | number : '1.1-2' }} </li>
+              <li *ngIf="index.estado == 'directo' "><i class="fa fa-check text-primary"></i> Costo Total:
+                {{index.datosBase.costoMateriales + index.datosBase.costoManoObra + index.datosBase.costoEquipos |
+                number : '1.1-2' }} </li>
+              </ul>
+            <hr>
+            <div class="row">
+              <div class="col-md-8"></div>
+              <div class="col-md-4">
+                <a class="h4 text-success" routerLink="/indiceDetail/{{index.obra.id}}/{{index.estado}}" data-bs-toggle="tooltip"
+                  data-bs-placement="top" title="Detalles del Indice"><i class="fa fa-archive fa-sm"></i></a> &nbsp;
+                <a (click)="deleteItem(index.id)" class="h4 text-danger" data-bs-toggle="tooltip"
+                  data-bs-placement="top" role="button" title="Eliminar Indice"><i class="fa fa-trash fa-sm"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="d-flex justify-content-center">
+    <div>
+      <pagination-controls class="paginator" id="list1" previousLabel="Página anterior" nextLabel="Página siguiente"
+        [responsive]=true [autoHide]=false (pageChange)="handlePageChange($event)">
+      </pagination-controls>
+    </div>
+    <div>
+      <form [formGroup]="pgForm">
+        <select formControlName="pgSize" class="btn_select" (change)="setPageSize()" title="Elementos por página">
+          <option value="3" selected>3</option>
+          <option value="6">6</option>
+          <option value="9">9</option>
+          <option value="12">12</option>
+          <option value="15">15</option>
+        </select>
+      </form>
+    </div>
+  </div>
+</div>
+</div>

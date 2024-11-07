@@ -1,0 +1,71 @@
+<div class="container">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="container px-3 my-2 card-container" *ngIf="!isLoading">
+  <div class="container px-3 my-2 card-container">
+    <h4 class="mb-1 text-gray-800">Especialidades</h4>
+    <hr>
+    <div class="row">
+      <div class="col-4">
+        <div class="card shadow">
+          <div class="card-header py-2">
+            <h6 class="m-0 font-weight-bold text-primary">Nueva Especialidad </h6>
+          </div>
+          <div class="card-body">
+            <div *ngIf="formHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Error!</strong> El formulario contiene campos incorrectos
+              <button type="button" (click)="formHasErrors = false; validator.resetFormControls(form);"
+                class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div *ngIf="isCodeEspAdd" class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Error!</strong> Ya existe una especialidad con este código
+              <button type="button" (click)="isCodeEspAdd = false;" class="btn-close" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+            </div>
+            <form [formGroup]="form" (ngSubmit)="addData()">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Código</label>
+                <input type="text" [className]="validator.setControlClass(form.controls['code'], formHasErrors)"
+                  placeholder="01" formControlName="code">
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Descripción</label>
+                <input type="text" [className]="validator.setControlClass(form.controls['description'], formHasErrors)"
+                  placeholder="Estructura" formControlName="description">
+              </div><hr>
+              <button type="submit" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Agregar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    
+    <div class="col-8">
+      <div class="card border-left-primary shadow py-0">
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of especialidadesList">
+                <td>{{item.code}}</td>
+                <td>{{item.description}}</td>
+                <td><a class="text-danger" (click)="deleteItem(item.id)" data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="Eliminar Especialidad" role="button"><i
+                      class="fa fa-trash fa-lg "></i></a> &nbsp; <a (click)="openDialog(item)" data-bs-toggle="tooltip"
+                    data-bs-placement="top" title="Modificar especialidad" class="text-primary" role="button"><i
+                      class="fa fa-edit fa-lg"></i></a>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

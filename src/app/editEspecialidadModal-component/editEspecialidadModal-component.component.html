@@ -1,0 +1,24 @@
+<h5 mat-dialog-title>Modificar Especialidad</h5><hr>
+<div mat-dialog-content>
+<div *ngIf="formHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error!</strong> El formulario contiene campos incorrectos
+  <button type="button" (click)="formHasErrors = false; validator.resetFormControls(editEspecialidad);" class="btn-close" data-bs-dismiss="alert"
+      aria-label="Close"></button>
+</div>
+<div *ngIf="isCodeEspAdd" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error!</strong> Ya existe una especialidad con este código
+  <button type="button" (click)="isCodeEspAdd = false;" class="btn-close" data-bs-dismiss="alert"
+    aria-label="Close"></button>
+</div>
+ <form [formGroup]="editEspecialidad" (ngSubmit)="updateData()">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Código</label>
+    <input type="text" [className]="validator.setControlClass(editEspecialidad.controls['code'], formHasErrors)" placeholder="01" formControlName="code">
+  </div>
+    <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Descripción</label>
+      <input type="text" [className]="validator.setControlClass(editEspecialidad.controls['description'], formHasErrors)" placeholder="Estructura" formControlName="description">
+    </div>
+    <button type="submit" class="btn btn-outline-success"><i class="fa fa-check"></i> Modificar</button> &nbsp;  <button type="button" (click)="closeDialog()" class="btn btn-outline-dark">Cerrar</button>
+  </form>
+</div>

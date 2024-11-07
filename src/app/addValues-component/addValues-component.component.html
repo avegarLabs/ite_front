@@ -1,0 +1,178 @@
+<div class="container">
+  <div class="card shadow">
+    <div class="card-header py-2">
+      <h6 class="m-0 font-weight-bold text-primary">Agregar Valores</h6>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-6">
+          <form [formGroup]=" editValores" (submit)="updateValores()">
+            <div class="row">
+              <div class="col-6">
+                <div class="mb-3">
+                  <label class="form-label">Tipo de Servicio</label>
+                  <select class="form-select form-select-sm" aria-label="Tipo de Servicio" formControlName="estado">
+                    <option value="" selected disabled>Tipo de Servicio</option>
+                    <option *ngFor="let val of estadosList" [ngValue]="val">{{val}}</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">Sistema Presupuestario</label>
+                  <input type="text" class="form-control form-control-sm" formControlName="catalogo">
+                </div>
+                <h6>Costos Directos</h6>
+                <hr>
+                <label class="form-label">Costo Material</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="costoMateriales">
+                </div>
+                <label class="form-label">Costo Equipos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="costoEquipos">
+                </div>
+                <label class="form-label">Costo de Mano de Obras</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="costoManoObra">
+                </div>
+              </div>
+              <div class="col-6">
+                <h6>Otros Gastos Directos e Indirectos</h6>
+                <hr>
+                <label class="form-label">Total de Costos y Gastos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="totalCostosGastosProduccion">
+                </div>
+                <label class="form-label">Gastos Indirectos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="costoIndirectos">
+                </div>
+
+                <label class="form-label">Otros Conceptos de Gastos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="otrosConceptos">
+                </div>
+
+                <label class="form-label">Gastos Financieros</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="gastosFinancieros">
+                </div>
+
+                <label class="form-label">Gastos Tributarios</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="gastosTributarios">
+                </div>
+
+                <label class="form-label">Total de Gastos de la Obra</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="totalGastosObra">
+                </div>
+
+                <label class="form-label">Total de Costos y Gastos</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="totalCostosGastos">
+                </div>
+                
+                <label class="form-label">Utilidades</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="utilidades">
+                </div>
+
+                <label class="form-label">Precio del Servicio de Construcción y Montaje</label>
+                <div class="input-group input-group-sm mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                  <input type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-sm" formControlName="precioServicio">
+                </div>
+                <hr>
+                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Agregar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-6">
+          <div class="p-3 bg-light border rounded-3">
+            <form [formGroup]="addValorEspecialidad" (submit)="addEspecialidadValores()">
+              <div class="row">
+                <div class="col-7">
+                  <div class="mb-3">
+                    <label class="form-label">Especialidades</label>
+                    <select class="form-select form-select-sm" aria-label="Especialidades"
+                      formControlName="especialidades">
+                      <option *ngFor="let esp of espList" [ngValue]="esp">{{esp.description}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-5">
+                  <label class="form-label">Costo</label>
+                  <div class="input-group input-group-sm mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+                    <input type="number" class="form-control" aria-label="Sizing example input"
+                      aria-describedby="inputGroup-sizing-sm" formControlName="costoTotal">&nbsp;<button
+                      class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="flag">
+              <strong>Error!</strong> La especialidad ya esta en al tabla
+              <button type="button" (click)="closeAlert()" class="btn-close" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+            </div>
+            <h6>Valores por Especialidades:</h6>
+            <hr>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Especialidad</th>
+                  <th scope="col">Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of espArray">
+                  <td>{{item.especialidades.description}}</td>
+                  <td>{{item.costoTotal}}</td>
+                  <td><a class="text-danger" (click)="deleteItem(item)" data-bs-toggle="tooltip" data-bs-placement="top"
+                      title="Eliminar especialidad" role="button"><i class="fa fa-trash fa-lg"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div><br>
+          <div class="card border-left-warning shadow py-0">
+            <div class="card-body">
+              <form class="form-inline" [formGroup]="imort_form" (submit)="getDataFromFile()">
+                <div class="form-group mb-2">
+                  <input type="file" class="form-control-file" formControlName="file_path"
+                    (change)="selectFile($event)">
+                </div>
+                <button type="submit" class="btn btn-outline-info"><i class="fa fa-download"></i> Importar Datos del
+                  CalPreC</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

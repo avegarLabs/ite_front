@@ -1,0 +1,20 @@
+<div class="card shadow">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="card-header py-2" *ngIf="!isLoading">
+    <h6 class="m-0 font-weight-bold text-primary">Nuevo tipo de obra </h6>
+  </div>
+  <div class="card-body">
+    <div *ngIf="formHasErrors" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong> El formulario contiene campos incorrectos
+      <button type="button" (click)="formHasErrors = false; validator.resetFormControls(form);" class="btn-close"
+        data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="addData()">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Descripción</label>
+        <input type="text" [className]="validator.setControlClass(form.controls['descripcion'], formHasErrors)" formControlName="descripcion">
+      </div><hr>
+      <button type="submit" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Agregar</button>
+    </form>
+  </div>
+</div>

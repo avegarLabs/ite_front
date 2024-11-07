@@ -1,0 +1,37 @@
+<div class="container">
+  <app-wait-spinner [isLoading]="isLoading"></app-wait-spinner>
+  <div class="container px-3 my-2 card-container" *ngIf="!isLoading">
+  <div class="container px-3 my-2 card-container">
+    <h4 class="mb-1 text-gray-800">Tipologías</h4>
+    <hr>
+    <div class="row">
+      <div class="col-4">
+        <app-addTipology-component (updateList)="tipologyList = $event"></app-addTipology-component>
+      </div>
+      <div class="col-8">
+        <div class="card border-left-primary shadow py-0">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of tipologyList">
+                  <td>{{item.description}}</td>
+                  <td><a class="text-danger" (click)="deleteItem(item.id)" data-bs-toggle="tooltip" role="button"
+                      data-bs-placement="top" title="Eliminar tipología"><i class="fa fa-trash fa-lg"></i></a> &nbsp; <a
+                      data-bs-toggle="tooltip" data-bs-placement="top" title="Modificar descripción de la tipología" role="button"
+                      class="text-primary" (click)="openDialog(item)"><i class="fa fa-edit fa-lg"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
